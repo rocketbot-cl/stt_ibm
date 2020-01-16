@@ -66,7 +66,7 @@
                         },
                         "help": {
                             "en": "Obtain your key on https://cloud.ibm.com",
-                            "es": "Busque su key en https://loud.ibm.com "
+                            "es": "Busque su key en https://cloud.ibm.com "
                         },
                         "id": "api_key",
                         "css": "col-md-6"
@@ -83,7 +83,7 @@
                         },
                         "help": {
                             "en": "Obtain your url on https://cloud.ibm.com",
-                            "es": "Busque su url en https://loud.ibm.com "
+                            "es": "Busque su url en https://cloud.ibm.com "
                         },
                         "id": "url_service",
                         "css": "col-md-6"
