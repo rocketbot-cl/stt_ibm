@@ -23,6 +23,12 @@ Para instalar librerias se debe ingresar por terminal a la carpeta "libs"
     pip install <package> -t .
 
 """
+
+import os
+import sys
+base_path = tmp_global_obj["basepath"]
+cur_path = base_path + 'modules' + os.sep + 'STT_IBM' + os.sep + 'libs' + os.sep
+sys.path.append(cur_path)
 from ibm_watson import SpeechToTextV1
 import magic
 
