@@ -28,9 +28,11 @@ import os
 import sys
 base_path = tmp_global_obj["basepath"]
 cur_path = base_path + 'modules' + os.sep + 'STT_IBM' + os.sep + 'libs' + os.sep
-sys.path.append(cur_path)
-from ibm_watson import SpeechToTextV1
+if cur_path not in sys.path:
+    sys.path.append(cur_path)
 import magic
+from ibm_watson import SpeechToTextV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 module = GetParams("module")
 
@@ -39,20 +41,22 @@ if module == "GetSTT":
     api_key = GetParams("api_key")
     url_service = GetParams("url_service")
     result = GetParams("result")
+    try:
+        authenticator = IAMAuthenticator(api_key)
+        service = SpeechToTextV1(authenticator=authenticator)
+        service.set_service_url(url_service)
 
-    service = SpeechToTextV1(
-        iam_apikey=api_key,
-        url=url_service
-    )
+        audio_format = magic.from_file(audio_file, mime=True)
+        with open(audio_file, 'rb') as audio:
+            response = service.recognize(
+                audio=audio,
+                content_type=audio_format,
+                timestamps=False,
+                word_confidence=False,
+                model="es-ES_BroadbandModel").get_result()
 
-    audio_format = magic.from_file(audio_file, mime=True)
-    with open(audio_file, 'rb') as audio:
-        response = service.recognize(
-            audio=audio,
-            content_type=audio_format,
-            timestamps=False,
-            word_confidence=False,
-            model="es-ES_BroadbandModel").get_result()
-
-    if result:
-        SetVar(result, response["results"])
+        if result:
+            SetVar(result, response["results"])
+    except Exception as e:
+        PrintException()
+        raise e
